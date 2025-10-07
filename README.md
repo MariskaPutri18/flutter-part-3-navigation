@@ -2,15 +2,20 @@
 
 A new Flutter project.
 
-## Getting Started
+# lLAPORAN NAVIGASI
 
-This project is a starting point for a Flutter application.
+Flutter project NAVIGASI.
 
-A few resources to get you started if this is your first Flutter project:
+## Praktikum 5:Membangun Navigasi di Flutter
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+![Screenshot belanja](images/01.png)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+![Screenshot belanja](images/02.png)
+
+## TUGAS PRAKTIKUM 2
+
+![Screenshot belanja](images/03.png)
+![Screenshot belanja](images/03.png)
+
+Untuk laporan Praktikum bisa di lihat di sini
+[online documentation](https://drive.google.com/file/d/1ggNm2Ee7qICLcRB5ZpKRYgIjoltO_Krh/view?usp=sharing)
