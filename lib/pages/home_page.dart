@@ -1,25 +1,29 @@
+// File: pages/home_page.dart
+
 import 'package:belanja/models/item.dart';
 import 'package:flutter/material.dart';
 
-// Widget Baru: Untuk menampilkan Foto Produk 
+// Widget Baru: Untuk menampilkan Foto Produk (dengan Hero )
 class ProductPhoto extends StatelessWidget {
   final String photoPath;
+  final String heroTag; 
 
-  const ProductPhoto({super.key, required this.photoPath});
+  const ProductPhoto({super.key, required this.photoPath, required this.heroTag});
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: ClipRRect(
-        borderRadius: const BorderRadius.vertical(top: Radius.circular(8.0)),
-        child: Image.asset(
-          photoPath,
-          fit: BoxFit.cover,
-          width: double.infinity,
-          errorBuilder: (context, error, stackTrace) => Container(
-            color: Colors.grey,
-            child: const Center(
-              child: Text('No Image', style: TextStyle(color: Colors.white)),
+      child: Hero( 
+        tag: heroTag,
+        child: ClipRRect(
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(8.0)),
+          child: Image.asset(
+            photoPath, 
+            fit: BoxFit.cover, 
+            width: double.infinity,
+            errorBuilder: (context, error, stackTrace) => Container(
+              color: Colors.grey,
+              child: const Center(child: Text('No Image', style: TextStyle(color: Colors.white))),
             ),
           ),
         ),
@@ -42,7 +46,7 @@ class ProductText extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 2.0),
           child: Text(
-            item.name,
+            item.name, 
             style: const TextStyle(fontWeight: FontWeight.bold),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
@@ -80,20 +84,23 @@ class ProductRating extends StatelessWidget {
     );
   }
 }
-// Widget Item di GridView (menggunakan widget pembantu)
+
+// Widget Item di GridView (dengan Hero Tagging)
 class ProductGridItem extends StatelessWidget {
   final Item item;
   final int index;
 
-  const ProductGridItem({Key? key, required this.item, required this.index})
-    : super(key: key);
+  const ProductGridItem({Key? key, required this.item, required this.index}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    // Definisikan tag unik untuk item ini
+    final heroTag = 'product-${item.name}-$index'; 
+
     return InkWell(
       onTap: () {
-        // Navigasi ke ItemPage
-        Navigator.pushNamed(context, '/item', arguments: {'item': item});
+        // PERUBAHAN: Mengirim item DAN tag melalui arguments
+        Navigator.pushNamed(context, '/item', arguments: {'item': item, 'tag': heroTag});
       },
       child: Card(
         elevation: 2,
@@ -101,12 +108,10 @@ class ProductGridItem extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Menggunakan widget baru untuk Foto
-            ProductPhoto(photoPath: item.photo),
-            // Menggunakan widget baru untuk Teks/Detail
-            ProductText(item: item),
-            // Menggunakan widget baru untuk Rating
-            ProductRating(rating: item.rating),
+            // Kirim tag ke ProductPhoto
+            ProductPhoto(photoPath: item.photo, heroTag: heroTag), 
+            ProductText(item: item), 
+            ProductRating(rating: item.rating), 
           ],
         ),
       ),
@@ -126,14 +131,8 @@ class AppFooter extends StatelessWidget {
       width: double.infinity,
       child: const Column(
         children: [
-          Text(
-            'Nama: MARISKA PUTRI',
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
-          ),
-          Text(
-            'NIM: 2341760051',
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
-          ),
+          Text('Nama: MARISKA PUTRI', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
+          Text('NIM: 2341760051', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
         ],
       ),
     );
@@ -142,35 +141,12 @@ class AppFooter extends StatelessWidget {
 
 // Halaman Utama Aplikasi
 class HomePage extends StatelessWidget {
+  // Data item dengan path aset lokal yang benar
   final List<Item> items = [
-    Item(
-      name: 'Sugar',
-      price: 5000,
-      photo: 'images/sugar.png',
-      stock: 50,
-      rating: 4.5,
-    ),
-    Item(
-      name: 'Salt',
-      price: 2000,
-      photo: 'images/salt.png',
-      stock: 100,
-      rating: 4.8,
-    ),
-    Item(
-      name: 'Tea',
-      price: 10000,
-      photo: 'images/tea.png',
-      stock: 30,
-      rating: 4.2,
-    ),
-    Item(
-      name: 'Coffee',
-      price: 15000,
-      photo: 'images/coffee.png',
-      stock: 75,
-      rating: 4.7,
-    ),
+    Item(name: 'Sugar', price: 5000, photo: 'images/sugar.png', stock: 50, rating: 4.5),
+    Item(name: 'Salt', price: 2000, photo: 'images/salt.png', stock: 100, rating: 4.8),
+    Item(name: 'Tea', price: 10000, photo: 'images/tea.png', stock: 30, rating: 4.2),
+    Item(name: 'Coffee', price: 15000, photo: 'images/coffee.png', stock: 75, rating: 4.7),
   ];
 
   @override
@@ -183,10 +159,10 @@ class HomePage extends StatelessWidget {
             child: GridView.builder(
               padding: const EdgeInsets.all(10),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
+                crossAxisCount: 2, 
                 crossAxisSpacing: 10,
                 mainAxisSpacing: 10,
-                childAspectRatio: 0.75, // Disesuaikan untuk tampilan item
+                childAspectRatio: 0.75, 
               ),
               itemCount: items.length,
               itemBuilder: (context, index) {
